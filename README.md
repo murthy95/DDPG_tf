@@ -15,7 +15,7 @@ https://yanpanlau.github.io/2016/10/11/Torcs-Keras.html
 # How to Run?
 
 ```
-git clone
+git clone https://github.com/murthy95/DDPG_tf.git
 cd DDPG_tf
 python ddpg.py 
 ```
