@@ -53,7 +53,7 @@ class ActorNetwork(object):
         conv1 = tf.layers.conv2d(self.state, 32, kernel_size=(3,3),padding='valid', activation=tf.nn.relu)
         conv2 = tf.layers.conv2d(conv1, 64, kernel_size=(3,3),padding='valid', activation=tf.nn.relu)
         conv3 = tf.layers.conv2d(conv2, 128, kernel_size=(3,3),padding='valid', activation=tf.nn.relu)
-        conv3_flat = tf.layers.flatten(conv3)
+        conv3_flat = tf.contrib.layers.flatten(conv3)
         dense1 = tf.layers.dense(conv3_flat, HIDDEN1_UNITS, activation=tf.nn.relu)
         dense2 = tf.layers.dense(dense1, HIDDEN2_UNITS, activation=tf.nn.relu)
 

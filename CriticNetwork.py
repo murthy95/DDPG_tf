@@ -14,11 +14,11 @@ class CriticNetwork(object):
 
         #Now create the model
         self.state = tf.placeholder(tf.float32, shape=[None]+state_shape)
-        self.action = tf.placeholder(tf.float32, shape=[None]+action_size)
+        self.action = tf.placeholder(tf.float32, shape=[None,action_size])
         self.y = tf.placeholder(tf.float32, shape=[None, 1])
 
         self.output, self.weights = self.create_critic_network(state_shape, action_size)
-        self.target_output, self.target_weights = self.create_critic_network(state_size, action_size)
+        self.target_output, self.target_weights = self.create_critic_network(state_shape, action_size)
         self.action_grads = tf.gradients(self.output, self.action)  #GRADIENTS for policy update
         self.sess.run(tf.global_variables_initializer())
 
@@ -44,11 +44,12 @@ class CriticNetwork(object):
             self.action:actions
         })
     def train(self, states, actions, y):
+        print "training critic network", states.shape, actions.shape
         n_iterations = 10
         for _ in range(n_iterations):
             self.sess.run(self.optimize, feed_dict={
                 self.state: states,
-                self.action:actions
+                self.action: actions
             })
 
     def target_train(self):
@@ -63,12 +64,12 @@ class CriticNetwork(object):
         conv1 = tf.layers.conv2d(self.state, 32, kernel_size=(3,3),padding='valid', activation=tf.nn.relu)
         conv2 = tf.layers.conv2d(conv1, 64, kernel_size=(3,3),padding='valid', activation=tf.nn.relu)
         conv3 = tf.layers.conv2d(conv2, 128, kernel_size=(3,3),padding='valid', activation=tf.nn.relu)
-        conv3_flat = tf.layers.flatten(conv3)
+        conv3_flat = tf.contrib.layers.flatten(conv3)
 
         dense1 = tf.layers.dense(conv3_flat, HIDDEN1_UNITS, activation=tf.nn.relu)
 
         a_dense1 = tf.layers.dense(self.action, HIDDEN1_UNITS, activation=tf.nn.relu)
-        new_concat = tf.layers.flatten(tf.concat([dense1, a_dense1], axis=1))
+        new_concat = tf.contrib.layers.flatten(tf.concat([dense1, a_dense1], axis=1))
         dense2 = tf.layers.dense(new_concat, HIDDEN2_UNITS, activation=tf.nn.relu)
         output = tf.layers.dense(dense2, 1)
 

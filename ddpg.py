@@ -2,14 +2,7 @@ from gym_torcs import TorcsEnv
 import numpy as np
 import random
 import argparse
-from keras.models import model_from_json, Model
-from keras.models import Sequential
-from keras.layers.core import Dense, Dropout, Activation, Flatten
-from keras.optimizers import Adam
 import tensorflow as tf
-#from keras.engine.training import collect_trainable_weights
-import json
-
 from ReplayBuffer import ReplayBuffer
 from ActorNetwork import ActorNetwork
 from CriticNetwork import CriticNetwork
@@ -27,11 +20,11 @@ def playGame(train_indicator=1):    #1 means Train, 0 means simply Run
     LRC = 0.001     #Lerning rate for Critic
 
     action_dim = 3  #Steering/Acceleration/Brake
-    state_dim = [64,64,3]  #of sensors input
+    state_dim = [64,64,3]  # of sensors input since only one frame as observation
 
     np.random.seed(1337)
 
-    vision = True #chainging vsion to true
+    vision = True #changing vsion to true
 
     EXPLORE = 100000.
     episode_count = 2000
@@ -104,7 +97,7 @@ def playGame(train_indicator=1):    #1 means Train, 0 means simply Run
             s_t1 = ob.img.reshape(state_dim)
             buff.add(s_t, a_t[0], r_t, s_t1, done)      #Add replay buffer
 
-            #Do the batch update
+            print "Do the batch update"
             batch = buff.getBatch(BATCH_SIZE)
             states = np.asarray([e[0] for e in batch])
             actions = np.asarray([e[1] for e in batch])
