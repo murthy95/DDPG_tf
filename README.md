@@ -1,27 +1,22 @@
-## Using Keras and Deep Deterministic Policy Gradient to play TORCS
+## Using Tensorflow and Deep Deterministic Policy Gradient to play TORCS
 
-300 lines of python code to demonstrate DDPG with Keras
+This repository contains tensorlfow implementation of Deep Deterministic policy gradients explaiend in the paper http://proceedings.mlr.press/v32/silver14.pdf. 
+The Actor Critic agent is trained to drive autonomously in the TORCS environment.
 
-Please read the following blog for details
-
+For more details and documentation please refer to the blog 
 https://yanpanlau.github.io/2016/10/11/Torcs-Keras.html
-
-![](fast.gif)
 
 # Installation Dependencies:
 
 * Python 2.7
-* Keras 1.1.0
 * Tensorflow r0.10
-* [gym_torcs](https://github.com/ugo-nama-kun/gym_torcs)
+* [gym_torcs](https://github.com/ugo-nama-kun/gym_torcs) Pls. refer to (http://cicolink.blogspot.in/2012/10/how-to-compile-and-install-torcs-on.html) an excellent tutorial to install TORCS on Ubuntu.
 
 # How to Run?
 
 ```
-git clone https://github.com/yanpanlau/DDPG-Keras-Torcs.git
-cd DDPG-Keras-Torcs
-cp *.* ~/gym_torcs
-cd ~/gym_torcs
+git clone
+cd DDPG-tf
 python ddpg.py 
 ```
 

@@ -245,7 +245,7 @@ class TorcsEnv:
                      'speedX', 'speedY', 'speedZ', 'angle', 'damage',
                      'opponents',
                      'rpm',
-                     'track', 
+                     'track',
                      'trackPos',
                      'wheelSpinVel']
             Observation = col.namedtuple('Observaion', names)
@@ -260,27 +260,35 @@ class TorcsEnv:
                                track=np.array(raw_obs['track'], dtype=np.float32)/200.,
                                trackPos=np.array(raw_obs['trackPos'], dtype=np.float32)/1.,
                                wheelSpinVel=np.array(raw_obs['wheelSpinVel'], dtype=np.float32))
+        # else:
+        #     names = ['focus',
+        #              'speedX', 'speedY', 'speedZ', 'angle',
+        #              'opponents',
+        #              'rpm',
+        #              'track',
+        #              'trackPos',
+        #              'wheelSpinVel',
+        #              'img']
+        #     Observation = col.namedtuple('Observaion', names)
+        #
+        #     # Get RGB from observation
+        #     image_rgb = self.obs_vision_to_image_rgb(raw_obs[names[8]])
+        #
+        #     return Observation(focus=np.array(raw_obs['focus'], dtype=np.float32)/200.,
+        #                        speedX=np.array(raw_obs['speedX'], dtype=np.float32)/self.default_speed,
+        #                        speedY=np.array(raw_obs['speedY'], dtype=np.float32)/self.default_speed,
+        #                        speedZ=np.array(raw_obs['speedZ'], dtype=np.float32)/self.default_speed,
+        #                        opponents=np.array(raw_obs['opponents'], dtype=np.float32)/200.,
+        #                        rpm=np.array(raw_obs['rpm'], dtype=np.float32),
+        #                        track=np.array(raw_obs['track'], dtype=np.float32)/200.,
+        #                        trackPos=np.array(raw_obs['trackPos'], dtype=np.float32)/1.,
+        #                        wheelSpinVel=np.array(raw_obs['wheelSpinVel'], dtype=np.float32),
+        #                        img=image_rgb)
         else:
-            names = ['focus',
-                     'speedX', 'speedY', 'speedZ', 'angle',
-                     'opponents',
-                     'rpm',
-                     'track',
-                     'trackPos',
-                     'wheelSpinVel',
-                     'img']
+            names = ['img']
             Observation = col.namedtuple('Observaion', names)
 
             # Get RGB from observation
             image_rgb = self.obs_vision_to_image_rgb(raw_obs[names[8]])
 
-            return Observation(focus=np.array(raw_obs['focus'], dtype=np.float32)/200.,
-                               speedX=np.array(raw_obs['speedX'], dtype=np.float32)/self.default_speed,
-                               speedY=np.array(raw_obs['speedY'], dtype=np.float32)/self.default_speed,
-                               speedZ=np.array(raw_obs['speedZ'], dtype=np.float32)/self.default_speed,
-                               opponents=np.array(raw_obs['opponents'], dtype=np.float32)/200.,
-                               rpm=np.array(raw_obs['rpm'], dtype=np.float32),
-                               track=np.array(raw_obs['track'], dtype=np.float32)/200.,
-                               trackPos=np.array(raw_obs['trackPos'], dtype=np.float32)/1.,
-                               wheelSpinVel=np.array(raw_obs['wheelSpinVel'], dtype=np.float32),
-                               img=image_rgb)
+            return Observation(img=image_rgb)
