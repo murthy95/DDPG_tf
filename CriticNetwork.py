@@ -20,10 +20,11 @@ class CriticNetwork(object):
         self.output, self.weights = self.create_critic_network(state_shape, action_size)
         self.target_output, self.target_weights = self.create_critic_network(state_shape, action_size)
         self.action_grads = tf.gradients(self.output, self.action)  #GRADIENTS for policy update
-        self.sess.run(tf.global_variables_initializer())
 
         self.loss = tf.losses.mean_squared_error(self.y, self.output)
-        self.optimize = tf.train.AdamOptimizer(LEARNING_RATE).minimize(self.loss)
+        self.optimize = tf.train.AdamOptimizer(LEARNING_RATE).minimize(self.loss, var_list=self.weights)
+
+        self.sess.run(tf.global_variables_initializer())
 
 
     def gradients(self, states, actions):

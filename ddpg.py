@@ -48,15 +48,14 @@ def playGame(train_indicator=1):    #1 means Train, 0 means simply Run
     env = TorcsEnv(vision=vision, throttle=True,gear_change=False)
 
     #Now load the weight
-    # print("Now we load the weight")
-    # try:
-    #     actor.model.load_weights("actormodel.h5")
-    #     critic.model.load_weights("criticmodel.h5")
-    #     actor.target_model.load_weights("actormodel.h5")
-    #     critic.target_model.load_weights("criticmodel.h5")
-    #     print("Weight load successfully")
-    # except:
-    #     print("Cannot find the weight")
+    try:
+        saved_actor_weights = tf.train.Saver.restore(sess, 'actor_weights.ckpt')
+        sess.run(tf.assign(actor.weights, saved_actor_weights))
+        saved_critic_weights = tf.train.Saver.restore(sess, 'critic_weights.ckpt')
+        sess.run(tf.assign(critic.weights, saved_critic_weights))
+        print("Weight load successfully")
+    except:
+        print("Cannot find the weight")
 
     print("TORCS Experiment Start.")
     for i in range(episode_count):
@@ -131,16 +130,19 @@ def playGame(train_indicator=1):    #1 means Train, 0 means simply Run
             if done:
                 break
 
-        # if np.mod(i, 3) == 0:
-        #     if (train_indicator):
-        #         print("Now we save model")
-        #         actor.model.save_weights("actormodel.h5", overwrite=True)
-        #         with open("actormodel.json", "w") as outfile:
-        #            json.dump(actor.model.to_json(), outfile)
-        #
-        #         critic.model.save_weights("criticmodel.h5", overwrite=True)
-        #         with open("criticmodel.json", "w") as outfile:
-        #             json.dump(critic.model.to_json(), outfile)
+
+        if np.mod(i, 3) == 0:
+            if (train_indicator):
+                print("Now we save model")
+                # actor.model.save_weights("actormodel.h5", overwrite=True)
+                saver_actor = tf.train.Saver(var_list = actor.weights, filename = 'actor_weights')
+                # with open("actormodel.json", "w") as outfile:
+                #    json.dump(actor.model.to_json(), outfile)
+
+                saver_critic = tf.train.Saver(var_list = critic.weights, filename = 'critic_weights')
+                # critic.model.save_weights("criticmodel.h5", overwrite=True)
+                # with open("criticmodel.json", "w") as outfile:
+                #     json.dump(critic.model.to_json(), outfile)
 
         print("TOTAL REWARD @ " + str(i) +"-th Episode  : Reward " + str(total_reward))
         print("Total Step: " + str(step))
